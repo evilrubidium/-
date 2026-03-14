@@ -24,3 +24,5 @@ https://disk.yandex.ru/i/2jXOddvLk_KWJQ
 https://disk.yandex.ru/i/72Xhml3wpkgNWQ
 
 ## Задание 6
+https://disk.yandex.ru/i/WUtBgmBtptRz7Q
+https://disk.yandex.ru/i/wnO2xultkdfEKA
