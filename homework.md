@@ -26,7 +26,9 @@ https://disk.yandex.ru/i/72Xhml3wpkgNWQ
 ## Задание 6
 была проблема с установко пакета dive, после в интернете нашел стабильную версию и ее поставил. Также импорт скриншотов в гите починился
 ![photo_2026-03-31_11-07-43](https://github.com/user-attachments/assets/acd6eed6-7ca0-4be3-93a8-add3f90c1511)
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/add532b5-921a-4d3c-9086-50e219672dee" />
 ![photo_2026-03-31_11-08-14](https://github.com/user-attachments/assets/020a0afb-9a1d-4025-9b0a-06540f3f724a)
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/1e1a594c-27e6-45f1-b526-63003bccc894" />
 
 
 
