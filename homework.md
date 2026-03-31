@@ -24,5 +24,8 @@ https://disk.yandex.ru/i/2jXOddvLk_KWJQ
 https://disk.yandex.ru/i/72Xhml3wpkgNWQ
 
 ## Задание 6
+![Uploading photo_2026-03-31_11-07-43.jpg…]()
+
+## Задание 6.1
 https://disk.yandex.ru/i/WUtBgmBtptRz7Q
 https://disk.yandex.ru/i/wnO2xultkdfEKA
