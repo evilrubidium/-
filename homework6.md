@@ -35,3 +35,20 @@ platform_id = "  platform_id = "standart-v4"
 "preemptible = true" Это означает, что ВМ — прерываемая (preemptible). Cтоит значительно дешевле и может быть остановлена в любой момент (без предупреждения). Если коротко то можно поднимать ВМ “на время практики” и не переплачивать
 
 "core_fraction = 5" Это ограничение CPU — доля использования ядра. Чем больше знначение, тем быстрее и дорожа ВМ обходится
+
+## Задание 2
+<img width="944" height="290" alt="image" src="https://github.com/user-attachments/assets/411f3bdb-50e2-4940-ace6-458fd9d37fb1" />
+
+## Задание 3
+<img width="1814" height="156" alt="image" src="https://github.com/user-attachments/assets/6ffc5190-2369-41d0-9d8c-031d59cb0dca" />
+
+
+## Задание 4
+<img width="496" height="224" alt="image" src="https://github.com/user-attachments/assets/dfa5a3a9-ee4e-432b-a4ed-387023dd8644" />
+
+## Задание 5
+<img width="768" height="179" alt="image" src="https://github.com/user-attachments/assets/db5de64d-4e42-486c-9f53-e171db2c9912" />
+
+## Задание 6
+<img width="1136" height="112" alt="image" src="https://github.com/user-attachments/assets/c106eeb7-88c8-43db-927b-ec82df0f9221" />
+
