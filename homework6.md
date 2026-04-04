@@ -55,7 +55,7 @@ platform_id = "  platform_id = "standart-v4"
 ## Код 
 
 # main.tf
-
+   ```
 # Существующая сеть
 data "yandex_vpc_network" "existing" {
   name      = var.existing_network_name
@@ -152,10 +152,10 @@ resource "yandex_compute_instance" "platform_db" {
 
   metadata = var.metadata
 }
-
+   ```
 
 # outputs.tf
-
+   ```
 output "vms_info" {
   value = [
     {
@@ -170,9 +170,10 @@ output "vms_info" {
     }
   ]
 }
-
+   ```
 
 # providers.tf
+   ```
 terraform {
   required_providers {
     yandex = {
@@ -188,9 +189,9 @@ provider "yandex" {
   folder_id = var.folder_id
   zone      = var.default_zone
 }
-
+   ```
 # variables.tf
-
+   ```
 ### cloud vars
 variable "cloud_id" {
   type        = string
@@ -298,3 +299,4 @@ variable "metadata" {
     "serial-port-enable" = 1
   }
 }
+  ```
