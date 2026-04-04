@@ -52,3 +52,249 @@ platform_id = "  platform_id = "standart-v4"
 ## Задание 6
 <img width="1136" height="112" alt="image" src="https://github.com/user-attachments/assets/c106eeb7-88c8-43db-927b-ec82df0f9221" />
 
+## Код 
+
+# main.tf
+
+# Существующая сеть
+data "yandex_vpc_network" "existing" {
+  name      = var.existing_network_name
+  folder_id = var.folder_id
+}
+
+# Подсеть для первой ВМ (web)
+resource "yandex_vpc_subnet" "develop" {
+  name           = "develop-web-subnet"
+  zone           = var.default_zone
+  network_id     = data.yandex_vpc_network.existing.id
+  v4_cidr_blocks = var.default_cidr
+}
+
+# Подсеть для второй ВМ (db)
+resource "yandex_vpc_subnet" "develop_db" {
+  name           = "develop-db-subnet"
+  zone           = "ru-central1-b"
+  network_id     = data.yandex_vpc_network.existing.id
+  v4_cidr_blocks = ["10.0.2.0/24"]
+}
+
+# Образ Ubuntu
+data "yandex_compute_image" "ubuntu" {
+  family = var.vm_web_image_family
+}
+
+# ВМ Web
+resource "yandex_compute_instance" "platform" {
+  name                      = local.vm_web_full_name
+  zone                      = var.default_zone
+  platform_id               = var.vm_web_platform_id
+  allow_stopping_for_update = true
+
+  resources {
+    cores         = var.vms_resources["web"].cores
+    memory        = var.vms_resources["web"].memory
+    core_fraction = var.vms_resources["web"].core_fraction
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = data.yandex_compute_image.ubuntu.image_id
+      size     = var.vms_resources["web"].hdd_size
+      type     = var.vms_resources["web"].hdd_type
+    }
+  }
+
+  scheduling_policy {
+    preemptible = var.vm_web_preemptible
+  }
+
+  network_interface {
+    subnet_id = yandex_vpc_subnet.develop.id
+    nat       = true
+  }
+
+  metadata = merge(
+  var.metadata,
+  {
+    "ssh-keys" = "ubuntu:${var.vms_ssh_root_key}"
+  }
+)
+}
+
+# ВМ DB
+resource "yandex_compute_instance" "platform_db" {
+  name        = local.vm_db_full_name
+  zone        = "ru-central1-b"
+  platform_id = var.vm_db_platform_id
+
+  resources {
+    cores         = var.vms_resources["db"].cores
+    memory        = var.vms_resources["db"].memory
+    core_fraction = var.vms_resources["db"].core_fraction
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = data.yandex_compute_image.ubuntu.image_id
+      size     = var.vms_resources["db"].hdd_size
+      type     = var.vms_resources["db"].hdd_type
+    }
+  }
+
+  scheduling_policy {
+    preemptible = var.vm_db_preemptible
+  }
+
+  network_interface {
+    subnet_id = yandex_vpc_subnet.develop_db.id
+    nat       = true
+  }
+
+  metadata = var.metadata
+}
+
+
+# outputs.tf
+
+output "vms_info" {
+  value = [
+    {
+      name       = yandex_compute_instance.platform.name
+      external_ip = yandex_compute_instance.platform.network_interface[0].nat_ip_address
+      fqdn       = yandex_compute_instance.platform.fqdn
+    },
+    {
+      name       = yandex_compute_instance.platform_db.name
+      external_ip = yandex_compute_instance.platform_db.network_interface[0].nat_ip_address
+      fqdn       = yandex_compute_instance.platform_db.fqdn
+    }
+  ]
+}
+
+
+# providers.tf
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+    }
+  }
+  required_version = "~>1.12.0"
+}
+
+
+provider "yandex" {
+  token     = "(мой токен, скрыл для безопастности)"
+  folder_id = var.folder_id
+  zone      = var.default_zone
+}
+
+# variables.tf
+
+### cloud vars
+variable "cloud_id" {
+  type        = string
+  description = "https://cloud.yandex.ru/docs/resource-manager/operations/cloud/get-id"
+}
+
+variable "folder_id" {
+  type        = string
+  description = "https://cloud.yandex.ru/docs/resource-manager/operations/folder/get-id"
+}
+
+variable "default_zone" {
+  type        = string
+  default     = "ru-central1-a"
+  description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
+}
+
+variable "default_cidr" {
+  type        = list(string)
+  default     = ["10.0.1.0/24"]
+  description = "https://cloud.yandex.ru/docs/vpc/operations/subnet-create"
+}
+
+variable "existing_network_name" {
+  type        = string
+  default     = "default"
+  description = "Name of the existing VPC network to use"
+}
+
+### ssh vars
+variable "vms_ssh_root_key" {
+  type        = string
+  default     = "(ssh key, скрыл для безопасости)"
+  description = "ssh-keygen -t ed25519"
+}
+
+### ВМ Web
+variable "vm_web_name" {
+  type    = string
+  default = "netology-develop-platform-web"
+}
+
+variable "vm_web_platform_id" {
+  type    = string
+  default = "standard-v3"
+}
+
+variable "vm_web_image_family" {
+  type    = string
+  default = "ubuntu-2004-lts"
+}
+
+variable "vm_web_preemptible" {
+  type    = bool
+  default = true
+}
+
+### ВМ DB
+variable "vm_db_name" {
+  type    = string
+  default = "netology-develop-platform-db"
+}
+
+variable "vm_db_platform_id" {
+  type    = string
+  default = "standard-v3"
+}
+
+variable "vm_db_preemptible" {
+  type    = bool
+  default = true
+}
+
+### Map переменная для ресурсов всех ВМ
+variable "vms_resources" {
+  type = map(object({
+    cores         = number
+    memory        = number
+    core_fraction = number
+    hdd_size      = number
+    hdd_type      = string
+  }))
+  default = {
+    web = {
+      cores         = 2
+      memory        = 2
+      core_fraction = 100
+      hdd_size      = 10
+      hdd_type      = "network-hdd"
+    }
+    db = {
+      cores         = 2
+      memory        = 2
+      core_fraction = 20
+      hdd_size      = 10
+      hdd_type      = "network-hdd"
+    }
+  }
+}
+
+### Общий metadata для всех ВМ
+variable "metadata" {
+  type = map(any)
+  default = {
+    "serial-port-enable" = 1
+  }
+}
