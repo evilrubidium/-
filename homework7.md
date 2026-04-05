@@ -16,3 +16,5 @@
 ## Задание 4
 
 <img width="749" height="391" alt="image" src="https://github.com/user-attachments/assets/1fc6d3c7-0deb-4df8-8656-5e2d7efc423d" />
+
+Ссылка на репозиторий - https://github.com/evilrubidium/-/tree/4402c16729cb803909ac035ec9bafc64f40f5834/terraform-03%20
