@@ -11,7 +11,7 @@ resource "yandex_compute_instance" "db" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd8nn389itrf54ofq31g" # Ubuntu 22.04
+      image_id = data.yandex_compute_image.ubuntu.id   # вместо id образа
       size     = each.value.disk_volume
     }
   }
