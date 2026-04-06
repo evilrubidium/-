@@ -25,5 +25,5 @@ resource "yandex_compute_instance" "web" {
     ssh-keys = "ubuntu:${local.ssh_pub_key}"
   }
 
-  depends_on = [yandex_compute_instance.db] # создаются после DB-VM
+  depends_on = [yandex_compute_instance.db]
 }
