@@ -10,7 +10,7 @@ resource "yandex_compute_instance" "web" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd8nn389itrf54ofq31g"
+      image_id = data.yandex_compute_image.ubuntu.id   # вместо id образа
       size     = 10
     }
   }
