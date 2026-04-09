@@ -1,17 +1,17 @@
 resource "yandex_compute_instance" "web" {
-  count       = 2
-  name        = "web-${count.index + 1}" # web-1, web-2
-  platform_id = "standard-v1"
+  count       = var.web_vm_count
+  name        = "web-${count.index + 1}"
+  platform_id = var.platform_id
 
   resources {
-    cores  = 2
-    memory = 2
+    cores  = var.web_vm_resources.cores
+    memory = var.web_vm_resources.memory
   }
 
   boot_disk {
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id   # вместо id образа
-      size     = 10
+      image_id = data.yandex_compute_image.ubuntu.id
+      size     = var.web_vm_disk_size
     }
   }
 
